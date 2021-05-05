@@ -1,0 +1,727 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="./storedata.js"></script>
+    <title>꿈나무 카드 가맹점 지도</title>
+<style>
+         
+        .sidenav {
+            height: 70%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            bottom: 0;
+            right: 0;
+            background-color: whitesmoke;
+            overflow-x: hidden;
+            transition: 0.5s ease-in-out;
+            padding-top: 60px;
+            border: 1px solid;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: black;
+                display: block;
+                transition: 0.2s ease-in-out;
+                border-bottom: 1px dashed gray;
+            }
+            .sidenav b {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: black;
+                display: block;
+                transition: 0.2s ease-in-out;
+            }
+
+                .sidenav a:hover, .offcanvas a:focus {
+                    color: #000;
+                }
+                .sidenav b:hover, .offcanvas a:focus {
+                    color: #000;
+                }
+    .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px !important;
+        margin-left: 50px;
+    }
+
+        .openmenu:hover {
+            color: rgb(0,154,200);
+            transition: 0.5s ease-in-out;
+        }
+
+        .openmenu {
+            font-size: 25px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+        }
+
+            .openmenu > i {
+                font-size: 30px;
+            }
+        .openmenu1 {
+            font-size: 25px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+        }
+
+            .openmenu1 > i {
+                font-size: 30px;
+            }
+        .openmenu2 {
+            font-size: 25px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+        }
+
+            .openmenu2 > i {
+                font-size: 30px;
+            }
+       
+        @media screen and (max-height:450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+                .sidenav a {
+                    font-size: 18px;
+                }
+                .sidenav b {
+                    font-size: 18px;
+                }
+        }
+    </style>
+<style>
+    .map_wrap, .map_wrap * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Malgun Gothic',dotum,'돋움',sans-serif;
+        font-size: 12px;
+    }
+.map_wrap {position:relative;width:100%;height:650px;}
+#category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
+#category li {float:left;list-style: none;width:80px;px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
+#category li.on {background: #eee;}
+#category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
+#category li:last-child{margin-right:0;border-right:0;}
+#category li span {display: block;margin:0 auto 3px;width:27px;height: 28px;}
+#category li .category_bg {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;}
+#category li .bank {background-position: -10px 0;}
+#category li .mart {background-position: -10px -36px;}
+#category li .pharmacy {background-position: -10px -72px;}
+#category li .oil {background-position: -10px -108px;}
+#category li .cafe {background-position: -10px -144px;}
+#category li .store {background-position: -10px -180px;}
+#category li .pllll {background-position: -10px -180px;}
+#category li.on .category_bg {background-position-x:-46px;}
+.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
+.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+.placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#000000;text-decoration: none;}
+.placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
+.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.placeinfo .tel {color:#0f7833;}
+.placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+.word { background-color: orange; font-style: italic; }
+
+    .area {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #888;
+        border-radius: 3px;
+        font-size: 12px;
+        top: -5px;
+        left: 15px;
+        padding: 2px;
+    }
+
+.info {
+    font-size: 12px;
+    padding: 5px;
+}
+.info .title {
+    font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+<select name ="priSearch" id="selectPri" onchange="currCost(this)">
+        <option value="none" selected>전체보기</option>
+        <option value="6000under">6000원 이하</option>
+        <option value="7000under">7000원 이하</option>
+        <option value="7000over">7000원 초과</option>
+    </select>
+<select name ="distSearch" id="selectDist" onchange="currDist(this)">
+        <option value="none" selected>전체보기</option>
+        <option value="3min">3분이하</option>
+        <option value="9min">9분 이하</option>
+        <option value="15min">15분 이하</option>
+    </select>
+<input type="text" id="txt1" />
+    <button class="openmenu"  onclick="textToVar()">입력완료</button>
+    <!--<button class="openmenu1" onclick="selectOverlay('MARKER')">마커생성기</button>
+    <button class="openmenu2" onclick="getDataFromDrawingMap()">위치설정완료</button>-->
+    
+
+<div class="map_wrap">
+    <div id="map" style="width:70%;height:120%;top:100px"></div>
+
+    <ul id="category">
+        <li id="AA1" data-order="0">
+            <img src="한식.jpg">
+            한식
+        </li>
+        <li id="AA2" data-order="1">
+            <img src="중식.jpg">
+            중식
+        </li>
+        <li id="AA3" data-order="2">
+            <img src="분식.jpg">
+            분식
+        </li>
+        <li id="AA4" data-order="3">
+            <img src="족발.jpg">
+            대중음식
+        </li>
+        <li id="AA5" data-order="4">
+            <img src="빵.jpg">
+            제과점
+        </li>
+        <li id="AA6" data-order="5">
+            <img src="햄버거.jpg">
+            패스트푸드
+        </li>
+        <li id="AA7" data-order="6">
+            <img src="선한영향력.png">
+            선한영향력
+        </li>
+    </ul>
+    
+<div id="mysidenav" class="sidenav">
+        <b href="#" class="closebtn" onclick='closeNav()'>x</b>
+        <a id = "menu1" href="#">메뉴1</a>
+        <a id = "menu2" href="#">메뉴2</a>
+        <a id = "menu3" href="#">메뉴3</a>
+        <a id = "menu4" href="#">메뉴4</a>
+        <a id = "menu5" href="#">메뉴5</a>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2e49fed176db346a0859f8b5d03c7cb4&libraries=services,drawing"></script>
+<script>
+    var platext = document.getElementById("txt1").value;
+// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
+ 
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.5783809385434, 127.057021940687), // 지도의 중심좌표
+        level: 5 // 지도의 확대 레벨
+    };  
+
+// 지도를 생성합니다    
+var map = new kakao.maps.Map(mapContainer, mapOption),
+customOverlay = new kakao.maps.CustomOverlay({}),
+infowindow = new kakao.maps.InfoWindow({removable: true});
+
+
+
+
+
+// 장소 검색 객체를 생성합니다  서버
+//var ps = new kakao.maps.services.Places(map);
+
+var placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
+    contentNode = document.createElement('div'), // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
+    markers = [], // 마커를 담을 배열입니다
+    currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
+
+// 지도에 idle 이벤트를 등록합니다
+kakao.maps.event.addListener(map, 'idle', searchPlaces);
+
+// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
+contentNode.className = 'placeinfo_wrap';
+
+// 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
+// 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다 
+addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
+addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
+
+// 커스텀 오버레이 컨텐츠를 설정합니다
+placeOverlay.setContent(contentNode);  
+
+// 각 카테고리에 클릭 이벤트를 등록합니다
+addCategoryClickEvent();
+
+// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+function addEventHandle(target, type, callback) {
+    if (target.addEventListener) {
+        target.addEventListener(type, callback);
+    } else {
+        target.attachEvent('on' + type, callback);
+    }
+}
+
+// 카테고리 검색을 요청하는 함수입니다  ###############################################
+function searchPlaces() {
+    if (!currCategory) {
+        return;
+    }
+    //console.log(currCategory);
+    // 커스텀 오버레이를 숨깁니다 
+    placeOverlay.setMap(null);
+
+    // 지도에 표시되고 있는 마커를 제거합니다
+    removeMarker();
+    //placesSearchCB(place);
+    //ps.categorySearch(currCategory, placesSearchCB, {useMapBounds:true}); 
+    //displayPlaces(places);
+    catefilter(currCategory); // 카테고리 필터
+    costfilter(aaa)
+    distfilter(bbb)
+    displayPlaces(ccc); // 필터를 통해 걸러진 데이터 출력
+    
+}
+//for (var i =0 ; i < storedata.length; i++){
+//    storedata[i].place_url = findwhere(storedata[i].address_name, storedata[i].y, storedata[i].x); 
+//}
+// (출발지 도착지) 넣으면 길찾기 url 주는 함수   // 시범적으로 보여줄 7개 정도만 위치정보 잘 보여주기 ( place.map.kakao.com/18577297 나오게 하기 길찾기, 평가정보가 포함되는것)
+function addParameter( param1 ,param2){
+    param1 = param1.replace(/ /g,"%20");
+    param2 = param2.replace(/ /g,"%20");
+    var url = "http://map.kakao.com/";
+    url = url + "?sName=" + param1 +  "&eName=" + param2;
+    return url
+}
+addParameter( storedata[9].address_name , storedata[11].address_name);
+
+// 장소 정보 넣으면 지도에 표시되는 함수
+function findwhere (param,y,x){
+   param = param.replace(/ /g,"");
+   var url = "https://map.kakao.com/"
+   url = url + "link/map/" + param +","+ y +","+ x
+   
+   return url;
+}
+findwhere( storedata[9].address_name, storedata[9].y, storedata[9].x);
+
+
+// https://map.kakao.com/?sName=출발장소&eName=도착장소
+// kakaomap://route?sp={위도1},{경도1}&ep={위도2},{경도2}&by={방법}
+
+
+
+
+// 카테고리 필터 함수    여기서부터는 필터입니다. 여기서부터는 필터입니다. 여기서부터는 필터입니다. 여기서부터는 필터입니다. 여기서부터는 필터입니다. 
+var aaa = [];
+function catefilter(currCategory){
+    aaa = [];
+    if (currCategory === 'AA1'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "한식"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA2'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "중식"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA3'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "분식"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA4'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "일반대중음식"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA5'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "제과점"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA6'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "패스트푸드"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+    else if (currCategory === 'AA7'){
+        for (var i =0 ; i < storedata.length; i++){
+            if (storedata[i].status == "선한영향력"){
+                aaa.push(storedata[i])
+            }
+        }
+    }
+}
+
+// 가격 콤보 박스
+var costcondition;
+function currCost(e){
+    const value = e.value;
+    costcondition = value;
+    searchPlaces();
+}
+
+// 가격 필터 함수
+var bbb = [];
+function costfilter(aaa){
+    bbb = [];
+    if (costcondition ===  '6000under'){
+        for (var i =0 ; i < aaa.length; i++){
+            if (aaa[i].six_under === "1"){
+                bbb.push(aaa[i])
+            }
+        }
+    }
+    else if (costcondition ===  '7000under'){
+        for (var i =0 ; i < aaa.length; i++){
+            if (aaa[i].seven_under == "1"){
+                bbb.push(aaa[i])
+            }
+        }
+    }
+    else if (costcondition ===  '7000over'){
+        for (var i =0 ; i < aaa.length; i++){
+            if (aaa[i].seven_over == "1"){
+                bbb.push(aaa[i])
+            }
+        }
+    }
+    else 
+    for (var i =0 ; i < aaa.length; i++){
+        bbb.push(aaa[i])
+    } 
+}
+// 거리 계산 함수 (meter)
+function distanceCal(lat1, lon1, lat2, lon2){  // (37.~~ , 127.~~)
+    
+    var theta = lon1 - lon2;
+    var dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+    dist = Math.acos(dist);
+    dist = rad2deg(dist);
+    dist = dist * 60 * 1.1515;
+    dist = dist * 1609.344;
+    return dist;
+}
+
+function deg2rad(deg) {
+    return (deg * Math.PI / 180.0);
+}     
+function rad2deg(rad) {
+    return (rad * 180 / Math.PI);
+}
+// 거리 콤보 박스
+var distcondition;
+function currDist(e){
+    const value = e.value;
+    distcondition = value;
+    searchPlaces();
+}
+// 거리 필터 함수
+var ccc = [];
+function distfilter(){
+    ccc = [];
+    if (distcondition ===  '3min'){  
+        for (var i =0 ; i < bbb.length; i++){
+            if (distanceCal(myplace[0].y, myplace[0].x, bbb[i].y, bbb[i].x) < 200){  // 3분
+                ccc.push(bbb[i])
+            }
+        }
+    }
+    else if (distcondition ===  '9min'){  
+        for (var i =0 ; i < bbb.length; i++){
+            if (distanceCal(myplace[0].y, myplace[0].x, bbb[i].y, bbb[i].x) < 600){  // 9분
+                ccc.push(bbb[i])
+            }
+        }
+    }
+    else if (distcondition ===  '15min'){  
+        for (var i =0 ; i < bbb.length; i++){
+            if (distanceCal(myplace[0].y, myplace[0].x, bbb[i].y, bbb[i].x) < 1000){  // 15분
+                ccc.push(bbb[i])
+            }
+        }
+    }
+    else
+    for (var i =0 ; i < bbb.length; i++){
+        ccc.push(bbb[i])
+    }               
+}
+// 여기까지가 필터입니다. 여기까지가 필터입니다. 여기까지가 필터입니다. 여기까지가 필터입니다. 여기까지가 필터입니다. 여기까지가 필터입니다. 
+
+
+
+
+// 지도에 마커를 표출하는 함수입니다
+function displayPlaces(places) {
+
+    // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
+    // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
+     var order = document.getElementById(currCategory).getAttribute('data-order');
+    //var order = 0;
+    //console.log(data-order);
+    for ( var i=0; i<places.length; i++ ) {
+
+            // 마커를 생성하고 지도에 표시합니다
+            var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+
+            // 마커와 검색결과 항목을 클릭 했을 때
+            // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
+            (function(marker, place) {
+                kakao.maps.event.addListener(marker, 'click', function() {
+                    displayPlaceInfo(place);
+                    document.getElementById('mysidenav').style.width = '30%'
+                    menuInfo(place);
+        
+                });
+            })(marker, places[i]);
+            
+        }
+    }
+    
+
+
+ function closeNav() {
+            document.getElementById('mysidenav').style.width = '0';
+        }
+
+// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+function addMarker(position, order) {
+    if(order != 6){
+         var marker = new kakao.maps.Marker({
+            map: map,
+            position: position
+        });
+
+    }
+    else if (order==6){
+     var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+
+       imageSize = new kakao.maps.Size(24, 35),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : null, // 스프라이트 이미지의 크기
+            spriteOrigin : null,
+            offset: null // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            marker = new kakao.maps.Marker({
+            position: position, // 마커의 위치
+            image: markerImage 
+        });
+    }
+
+
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+    return marker;
+}
+
+// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+function removeMarker() {
+    for ( var i = 0; i < markers.length; i++ ) {
+        markers[i].setMap(null);
+    }   
+    markers = [];
+}
+
+// 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
+function displayPlaceInfo (place) {
+
+var content = '<div class="placeinfo">' +  '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';   
+
+    
+    content += '    <span title="' + place.address_name + '">' + place.address_name + '</span>';
+
+    content += '<a href="'+place.DUMMY+'">길찾기링크</a>';
+
+    content += '    <span class="tel">' + place.phone + '</span>' + 
+                '</div>' + 
+                '<div class="after"></div>';
+    
+    contentNode.innerHTML = content;
+    placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
+    placeOverlay.setMap(map);  
+}
+// nav에 메뉴 넣는 메소드   //  if문 추가하여 undefined 리턴하는 값을 보고 "" 로 바꾸기
+function menuInfo(place){
+    var menulook = place.menu.split(',',5)
+    for (var i=0; i<5; i++){
+        if (menulook[i] == undefined){
+        menulook[i] = "";
+        }
+    }
+    var menu1 = document.getElementById('menu1');
+    menu1.innerHTML = menulook[0];
+    var menu2 = document.getElementById('menu2');
+    menu2.innerHTML = menulook[1];
+    var menu3 = document.getElementById('menu3');
+    menu3.innerHTML = menulook[2];
+    var menu4 = document.getElementById('menu4');
+    menu4.innerHTML = menulook[3];
+    var menu5 = document.getElementById('menu5');
+    menu5.innerHTML = menulook[4];
+}
+
+// 각 카테고리에 클릭 이벤트를 등록합니다
+function addCategoryClickEvent() {
+    var category = document.getElementById('category'),
+        children = category.children;
+
+    for (var i=0; i<children.length; i++) {
+        children[i].onclick = onClickCategory;
+    }
+}
+
+// 카테고리를 클릭했을 때 호출되는 함수입니다
+function onClickCategory() {
+    var id = this.id,
+        className = this.className;
+
+    placeOverlay.setMap(null);
+
+    if (className === 'on') {
+        currCategory = '';
+        changeCategoryClass();
+        removeMarker();
+    } else {
+        currCategory = id;
+        changeCategoryClass(this);
+        searchPlaces();
+    }
+}
+
+// 클릭된 카테고리에만 클릭된 스타일을 적용하는 함수입니다
+function changeCategoryClass(el) {
+    var category = document.getElementById('category'),
+        children = category.children,
+        i;
+        
+    for ( i=0; i<children.length; i++ ) {
+        children[i].className = '';
+    }
+
+    if (el) {
+        el.className = 'on';
+    } 
+} 
+
+
+function textToVar() {
+    var text1 = document.getElementById("txt1").value;
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다
+
+    geocoder.addressSearch(text1, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            myplace[0].x = result[0].x;
+            myplace[0].y = result[0].y;
+            console.log("검색 잘됨")
+          for (var i =0 ; i < storedata.length; i++){
+    storedata[i].DUMMY = addParameter(text1, storedata[i].address_name); 
+}
+txt2 = text1.replace(/ /g,"");
+        txt3 = storedata[11].address_name.replace(/ /g,"");
+        addParameter( txt2 , txt3);
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/2012/img/marker_normal.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+       imageSize = new kakao.maps.Size(37, 45),  // 마커 이미지의 크기
+        imgOptions =  {
+            spriteSize : new kakao.maps.Size(644, 946), // 스프라이트 이미지의 크기
+            spriteOrigin : new kakao.maps.Point(95, 325), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+            offset: new kakao.maps.Point(11, 28) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        },
+        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                marker = new kakao.maps.Marker({
+                map: map,
+            position: coords, // 마커의 위치
+            image: markerImage 
+        });
+    
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            map.setCenter(coords);
+        }
+        else {
+            alert("무야호~")
+        }
+});
+    
+}
+
+// 여기서 부터는 마커 생성 코드 입니다. 여기서 부터는 마커 생성 코드 입니다. 여기서 부터는 마커 생성 코드 입니다. 여기서 부터는 마커 생성 코드 입니다.
+var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
+    drawingMode: [ // Drawing Manager로 제공할 그리기 요소 모드입니다
+        kakao.maps.drawing.OverlayType.MARKER
+    ],
+    // 사용자에게 제공할 그리기 가이드 툴팁입니다
+    // 사용자에게 도형을 그릴때, 드래그할때, 수정할때 가이드 툴팁을 표시하도록 설정합니다
+    guideTooltip: ['draw', 'drag', 'edit'], 
+    markerOptions: { // 마커 옵션입니다 
+        draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다 
+        removable: true // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다  
+    }    
+};
+// 위에 작성한 옵션으로 Drawing Manager를 생성합니다
+var manager = new kakao.maps.drawing.DrawingManager(options);
+// 버튼 클릭 시 호출되는 핸들러 입니다
+function selectOverlay(type) {
+    // 그리기 중이면 그리기를 취소합니다
+    manager.cancel();
+    // 삭제
+    //removeOverlays();
+    // 클릭한 그리기 요소 타입을 선택합니다
+    manager.select(kakao.maps.drawing.OverlayType[type]);
+}
+function getDataFromDrawingMap() {
+    // Drawing Manager에서 그려진 데이터 정보를 가져옵니다 
+    var data = manager.getData();
+    // 마커 정보 수집
+    getMarker(data[kakao.maps.drawing.OverlayType.MARKER]);
+}
+// 마커 위치 수집하는 메소드 
+var myplace = [{"x":"0", "y":"0"}];
+function getMarker(markers){
+   overlays = [];
+   for (i=0; i < 1; i++) {
+        console.log(markers[i].y, markers[i].x)
+        myplace[i].x =  markers[i].x;
+        myplace[i].y =  markers[i].y;
+    }
+}
+// 여기까지가 마커 생성 코드 입니다. 여기까지가 마커 생성 코드 입니다. 여기까지가 마커 생성 코드 입니다. 여기까지가 마커 생성 코드 입니다. 여기까지가 마커 생성 코드 입니다. 
+
+
+
+</script>
+</body>
+</html>
